@@ -146,7 +146,6 @@
       background: var(--primary-dark);
     }
 
-    /* ESTILO INICIAL DO BOTÃO NÃO (LADO A LADO COM O SIM) */
     .btn-no {
       background: rgba(255, 255, 255, 0.15);
       color: white;
@@ -155,7 +154,6 @@
       z-index: 10000;
     }
 
-    /* CLASSE ATIVADA AO MOVER: VIRA FIXED PARA TELEPORTAR */
     .btn-no.teleporting {
       position: fixed;
     }
@@ -282,7 +280,7 @@
       margin-top: 4px;
     }
 
-    /* Slideshow */
+    /* Slideshow - CORRIGIDO PARA MOSTRAR A FOTO INTEIRA (OBJECT-FIT: CONTAIN) */
     .slideshow-container {
       position: relative;
       width: 100%;
@@ -311,7 +309,7 @@
     .slide img {
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: contain; /* <-- Alterado de 'cover' para 'contain' para não cortar as fotos */
     }
 
     .slide-caption {
@@ -479,7 +477,6 @@
 
     let noClickCount = 0;
 
-    // Função que faz o botão teleportar pela tela
     function teleportNoBtn() {
       if (!btnNo.classList.contains('teleporting')) {
         btnNo.classList.add('teleporting');
