@@ -484,49 +484,40 @@
     const btnNo = document.getElementById('btn-no');
     const btnTryAgain = document.getElementById('btn-try-again');
 
-    let noClickCount = 0;
+    let noAttempts = 0;
 
-    function teleportNoBtn() {
-      // Nos 2 primeiros cliques ele foge. No 3º clique ele para de fugir para permitir abrir a mensagem!
-      if (noClickCount >= 2) return; 
+    function handleNoInteraction(e) {
+      if (e) e.preventDefault();
+      noAttempts++;
 
-      if (!btnNo.classList.contains('teleporting')) {
-        btnNo.classList.add('teleporting');
-      }
+      if (noAttempts < 3) {
+        // Nas 2 primeiras tentativas, teleporta o botão
+        if (!btnNo.classList.contains('teleporting')) {
+          btnNo.classList.add('teleporting');
+        }
 
-      const btnWidth = btnNo.offsetWidth || 100;
-      const btnHeight = btnNo.offsetHeight || 40;
+        const btnWidth = btnNo.offsetWidth || 100;
+        const btnHeight = btnNo.offsetHeight || 40;
 
-      const maxX = window.innerWidth - btnWidth - 20;
-      const maxY = window.innerHeight - btnHeight - 20;
+        const maxX = window.innerWidth - btnWidth - 20;
+        const maxY = window.innerHeight - btnHeight - 20;
 
-      const randomX = Math.max(20, Math.floor(Math.random() * maxX));
-      const randomY = Math.max(20, Math.floor(Math.random() * maxY));
+        const randomX = Math.max(20, Math.floor(Math.random() * maxX));
+        const randomY = Math.max(20, Math.floor(Math.random() * maxY));
 
-      btnNo.style.left = `${randomX}px`;
-      btnNo.style.top = `${randomY}px`;
-    }
-
-    btnNo.addEventListener('mouseover', teleportNoBtn);
-    btnNo.addEventListener('touchstart', (e) => {
-      if (noClickCount < 2) {
-        e.preventDefault();
-        teleportNoBtn();
-      }
-    });
-
-    btnNo.addEventListener('click', () => {
-      noClickCount++;
-      
-      if (noClickCount < 3) {
-        teleportNoBtn();
+        btnNo.style.left = `${randomX}px`;
+        btnNo.style.top = `${randomY}px`;
       } else {
-        // No 3º clique ele para de fugir, esconde a pergunta e mostra a mensagem do dedo do meio
+        // Na 3ª tentativa, exibe a mensagem "AMA SIM!" e esconde o botão NÃO
         questionBlock.style.display = 'none';
         angryBlock.style.display = 'flex';
         btnNo.style.display = 'none';
       }
-    });
+    }
+
+    // Registra tanto evento de clique quanto de toque para funcionar perfeitamente em celulares
+    btnNo.addEventListener('touchstart', handleNoInteraction, { passive: false });
+    btnNo.addEventListener('click', handleNoInteraction);
 
     btnTryAgain.addEventListener('click', () => {
       angryBlock.style.display = 'none';
